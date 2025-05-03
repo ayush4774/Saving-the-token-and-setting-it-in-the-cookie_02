@@ -1,15 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Home</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <!--
-      Need a visual blank slate?
-      Remove all code in `styles.css`!
-    -->
-    <link rel="stylesheet" href="styles.css" />
-    <script type="module" src="script.js"></script>
+    <title>Home</title>
+    <script>
+      // Fetch the JWT token from the backend when the page loads
+      window.onload = async () => {
+        try {
+          // Make a fetch request to the backend to get the JWT token
+          const response = await fetch('http://localhost:5000/generate-token'); // Ensure the URL matches your backend URL
+          
+          if (!response.ok) {
+            throw new Error('Failed to fetch token');
+          }
+
+          const data = await response.json(); // Parse the JSON response
+          document.getElementById('token').textContent = data.token; // Display the token in the HTML
+        } catch (error) {
+          console.error('Error fetching token:', error); // Log any errors
+          document.getElementById('token').textContent = 'Error fetching token.'; // Display an error message
+        }
+      };
+    </script>
   </head>
   <body>
     <nav>
@@ -17,7 +30,9 @@
       <a href="/page2.html">Other page</a>
     </nav>
     <main>
-      <h1>Home page</h1>
+      <h1>Home Page</h1>
+      <p>Generated JWT Token:</p>
+      <pre id="token"></pre> <!-- Display JWT token here -->
     </main>
   </body>
 </html>
